@@ -77,5 +77,46 @@ alkane_RT_to_RI_calc<-function(	ms_data= raw_data,    #MSExperiment object from 
 
 } #End of function 1
 
+########
+#2. Function to calculate RI from list of chemicals with RT in minutes and alkane file
+cmp_rt_to_ri<- function( input_file= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/~RI Converter/13C_ISTD_MSSM-Exploris.xlsx",
+                        time_col1= "time",  #Time column in cmpds
+                        alkane_rt= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/Alkane_RT_MSSM_Exploris.xlsx",
+                        time_col2= "RT_mins_B1", #Time column to use in alkanes_rt
+                        outloc= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/~RI Converter/") {
 
+
+#Loop to adjust retention time with retention index
+cmpds<- as.data.frame(readxl::read_xlsx(input_file))
+alkane_rt<- readxl::read_xlsx(alkane_rt)
+
+#Results vector
+RI_rt_FINAL<- c() 	#Save adjusted RTs
+
+#for loop to update retention times with retention index
+#Select raw rt
+raw_rt<- cmpds[, time_col1]
+RI_rt_ii<- rep(0, length(raw_rt))
+
+#Loop through each pair of alkanes and calculate RI for each alkane pair
+for(jj in 2:nrow(alkane_rt)) {
+
+  #Alkane retention times
+  alkane_1<- as.numeric(alkane_rt[jj - 1, time_col2]) #Tz
+  alkane_2<- as.numeric(alkane_rt[jj, time_col2])    #Tz+1
+
+  #Select all retention times between alkane_1 and alkane_2
+  rt_jj<- which(raw_rt > alkane_1 & raw_rt <= alkane_2)
+
+  #Calculate Retention time index
+  RI_rt_ii[rt_jj]<- 100 * ((raw_rt[rt_jj] - alkane_1)/(alkane_2 - alkane_1) + as.numeric(alkane_rt[jj - 1, "Alkane_N"]))
+}
+
+
+#Update raw retention time with alkane indices
+cmpds$Alkane_RI<- RI_rt_ii
+out.names<-paste(outloc, "/", "RI-Updated_", basename(input_file), sep="")
+writexl::write_xlsx(cmpds, out.names)
+
+} #End of function
 
