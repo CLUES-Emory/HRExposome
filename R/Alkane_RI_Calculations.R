@@ -1,7 +1,7 @@
 #Functions related to calculating RI from retention time indices
 
 #1. Function to calculate RI from alkane RTs
-alkane_RT_to_RI_calc<-function(	ms_data= raw_data,
+alkane_RT_to_RI_calc<-function(	ms_data= raw_data,    #MSExperiment object from XCMS
                                 alkanes= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/10-Update_240608/3-Extraction_inputs/240806_Test_Batches_Alkanes.xlsx",
                                 average_rt= TRUE,
                                 filter_rt= TRUE,
