@@ -8,7 +8,7 @@
 #mapfile: Mapfile containing Filename, Sample_ID, Batch_Number, Sample_class. Filename must be the first column.
 
 #1. Function to calculate RI from alkane RTs
-alkane_RT_to_RI_calc<-function(	ms_data= raw_data,    #MSExperiment object from XCMS
+xcms_RT_to_RI_calc<-function(	ms_data= raw_data,    #MSExperiment object from XCMS
                                 alkanes= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/10-Update_240608/3-Extraction_inputs/240806_Test_Batches_Alkanes.xlsx",
                                 average_rt= TRUE,
                                 filter_rt= TRUE,
@@ -135,5 +135,5 @@ cmpds$Alkane_RI<- RI_rt_ii
 out.names<-paste(outloc, "/", "RI-Updated_", basename(input_file), sep="")
 writexl::write_xlsx(cmpds, out.names)
 
-} #End of function
+} #End of function 2
 
