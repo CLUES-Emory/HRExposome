@@ -1,5 +1,12 @@
 #Functions related to calculating RI from retention time indices
 
+#Variables include:
+#ms_data: MSExperiment object from XCMS
+#alkanes: sheet containing alkane retention times for all batches. See example
+#average_rt: If TRUE, duplicate alkane runs in a batch will be averaged. If FALSE, will use alkane rts provides
+#filter_rt: If TRUE, remove rt before earliest alkane and after latest alkane. If FALSE, no filtering occurs.
+#mapfile: Mapfile containing Filename, Sample_ID, Batch_Number, Sample_class. Filename must be the first column.
+
 #1. Function to calculate RI from alkane RTs
 alkane_RT_to_RI_calc<-function(	ms_data= raw_data,    #MSExperiment object from XCMS
                                 alkanes= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/10-Update_240608/3-Extraction_inputs/240806_Test_Batches_Alkanes.xlsx",
@@ -77,10 +84,20 @@ alkane_RT_to_RI_calc<-function(	ms_data= raw_data,    #MSExperiment object from 
 
 } #End of function 1
 
+
+
+
 ########
+#Variables include:
+#input_file: File containing compounds of interest in each row and detected retention time (in minutes).
+#time_col1: Time column in input file
+#alkane_rt: File containing alkane retention times (in minutes)
+#time_col2:  column to use in alkanes_rt
+#outloc: Where to save files
+
 #2. Function to calculate RI from list of chemicals with RT in minutes and alkane file
-cmp_rt_to_ri<- function( input_file= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/~RI Converter/13C_ISTD_MSSM-Exploris.xlsx",
-                        time_col1= "time",  #Time column in cmpds
+cmp_rt_to_ri<- function(input_file= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/~RI Converter/13C_ISTD_MSSM-Exploris.xlsx",
+                        time_col1= "time",
                         alkane_rt= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/Alkane_RT_MSSM_Exploris.xlsx",
                         time_col2= "RT_mins_B1", #Time column to use in alkanes_rt
                         outloc= "/Users/diwalke/Dropbox/RESEARCH/Scripts/2024/3-Complete_GC-HRMS_processing_wf/~RI Converter/") {
